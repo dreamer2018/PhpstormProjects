@@ -9,7 +9,11 @@ require_once "DB_login.php";
 if (isset($_POST['username'])) {
     $username = $_POST['username'];
     $phone = $_POST['phone'];
+    $grade = $_POST['grade'];
+    $company = $_POST['company'];
+    $email = $_POST['email'];
     $address = $_POST['address'];
+
     $sign = 1;  //信息正确性标志
     /*
      * 对输入信息进行验证
@@ -19,7 +23,11 @@ if (isset($_POST['username'])) {
 
     $username = htmlentities($username, ENT_QUOTES, "UTF-8");
     $phone = htmlentities($phone, ENT_QUOTES, "UTF-8");
+    $grade = htmlentities($grade, ENT_QUOTES, "UTF-8");
+    $company = htmlentities($company, ENT_QUOTES, "UTF-8");
+    $email = htmlentities($email, ENT_QUOTES, "UTF-8");
     $address = htmlentities($address, ENT_QUOTES, "UTF-8");
+
 
     if (strlen($username) > 40 or strlen($username) < 1) {
         $message = $message . "<p>姓名为空或过长！</p><br/>";
@@ -29,7 +37,15 @@ if (isset($_POST['username'])) {
         $sign = 0;
     } elseif (strlen($address) < 1) {
         $message = $message . "<p>地址不能为空！</p><br/>";
+        $sign = 0;
+    } elseif (strlen($grade) < 1) {
+        $message = $message . "<p>年级不能为空！</p><br/>";
+        $sign = 0;
+    } elseif (strlen($email) < 1) {
+        $message = $message . "<p>邮箱不能为空！</p><br/>";
+        $sign = 0;
     }
+
     if ($sign) {
         /*
         * 连接数据库
@@ -53,7 +69,11 @@ if (isset($_POST['username'])) {
             $id = $row["id"];
         }
         if ($count == 0) {
-            $query = 'INSERT INTO information(name,phone,address) VALUES (\'' . $username . '\',\'' . $phone . '\',\'' . $address . '\')';
+            if (strlen($company) < 1) {
+                $query = 'INSERT INTO information(name,phone,address,grade,email) VALUES (\'' . $username . '\',\'' . $phone . '\',\'' . $address . '\',\'' . $grade . '\',\'' . $email . '\')';
+            } else {
+                $query = 'INSERT INTO information(name,phone,address,grade,email,company) VALUES (\'' . $username . '\',\'' . $phone . '\',\'' . $address . '\',\'' . $grade . '\',\'' . $email . '\',\'' . $company . '\')';
+            }
             $result = $connect->query($query);
             if (!$result) {
                 $message = "提交失败！";
@@ -61,7 +81,11 @@ if (isset($_POST['username'])) {
                 $message = "提交成功！";
             }
         } else {
-            $query = 'UPDATE information SET name=\'' . $username . '\',phone=\'' . $phone . '\',address=\'' . $address . '\' WHERE id =' . $id . ';';
+            if (strlen($company) < 1) {
+                $query = 'UPDATE information SET name=\'' . $username . '\',phone=\'' . $phone . '\',address=\'' . $address . '\',grade=\'' . $grade . '\',email=\'' . $email . '\' WHERE id =' . $id . ';';
+            } else {
+                $query = 'UPDATE information SET name=\'' . $username . '\',phone=\'' . $phone . '\',address=\'' . $address . '\',grade=\'' . $grade . '\',email=\'' . $email . '\',company=\'' . $company . '\' WHERE id =' . $id . ';';
+            }
             $result = $connect->query($query);
             if (!$result) {
                 $message = "更新失败！";
@@ -163,7 +187,31 @@ if (isset($_POST['username'])) {
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="text" class="form-control"
-                                                                   placeholder="地址" name="address"
+                                                                   placeholder="年级(如14级)" name="grade"
+                                                                   value="<?php echo $grade ?>" required/>
+															<i class="ace-icon fa fa-group"></i>
+														</span>
+                                            </label>
+                                            <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" class="form-control"
+                                                                   placeholder="公司(选填)" name="company"
+                                                                   value="<?php echo $company ?>"/>
+															<i class="ace-icon fa fa-adjust"></i>
+														</span>
+                                            </label>
+                                            <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="email" class="form-control"
+                                                                   placeholder="邮箱" name="email"
+                                                                   value="<?php echo $email ?>" required/>
+															<i class="ace-icon fa fa-mail-reply-all"></i>
+														</span>
+                                            </label>
+                                            <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" class="form-control"
+                                                                   placeholder="住址" name="address"
                                                                    value="<?php echo $address ?>" required/>
 															<i class="ace-icon fa fa-home"></i>
 														</span>
@@ -232,11 +280,11 @@ if (isset($_POST['username'])) {
         <br/>
         <br/>
         <br/>
-        <p style="color: #dc1275; font-size: 20px;">
+        <div style="color: #dc1275; font-size: 20px;">
             <?php
             echo $message;
             ?>
-        </p>
+        </div>
     </div>
 </body>
 </html>

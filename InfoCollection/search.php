@@ -118,7 +118,7 @@
 
                                                 $select = $connect->select_db($DB_NAME);
 
-                                                $query = 'SELECT id,name,phone,address FROM information WHERE phone = \'' . $phone . '\';';
+                                                $query = 'SELECT id,name,phone,address,grade,company,email FROM information WHERE phone = \'' . $phone . '\';';
                                                 $result = $connect->query($query);
                                                 while ($row = $result->fetch_array()) {
                                                     echo '<label class="block clearfix">';
@@ -128,7 +128,13 @@
                                                     echo "<br/>";
                                                     echo '手机号:&nbsp;&nbsp;' . $row['phone'] . '<br/>';
                                                     echo "<br/>";
-                                                    echo '地&nbsp;&nbsp;&nbsp;&nbsp;址:&nbsp;&nbsp;' . $row['address'] . '<br/>';
+                                                    echo '年&nbsp;&nbsp;&nbsp;&nbsp;级:&nbsp;&nbsp;' . $row['grade'] . '<br/>';
+                                                    echo "<br/>";
+                                                    echo '公&nbsp;&nbsp;&nbsp;&nbsp;司:&nbsp;&nbsp;' . $row['company'] . '<br/>';
+                                                    echo "<br/>";
+                                                    echo '邮&nbsp;&nbsp;&nbsp;&nbsp;箱:&nbsp;&nbsp;' . $row['email'] . '<br/>';
+                                                    echo "<br/>";
+                                                    echo '住&nbsp;&nbsp;&nbsp;&nbsp;址:&nbsp;&nbsp;' . $row['address'] . '<br/>';
                                                     echo "<br/>";
                                                     echo "</h5>";
                                                     echo '</label>';

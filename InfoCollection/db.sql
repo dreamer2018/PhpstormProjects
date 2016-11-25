@@ -1,0 +1,13 @@
+DROP DATABASE IF EXISTS InfoCollection;
+DROP TABLE IF EXISTS information;
+CREATE DATABASE InfoCollection;
+USE InfoCollection;
+CREATE TABLE information (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(40) NOT NULL ,
+  phone CHAR(11) UNIQUE NOT NULL ,
+  grade VARCHAR(20) NOT NULL ,
+  address VARCHAR(100) NOT NULL,
+  email VARCHAR(50) NOT NULL ,
+  company VARCHAR(50)
+);
